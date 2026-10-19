@@ -1,0 +1,40 @@
+{
+  "personalizados": {
+    "Dalia para devhubsharks": {
+      "voz": "⭐ Dalia        · MX Mujer",
+      "vel": 10,
+      "pit": 0,
+      "vol": 1.967,
+      "rob": 0.043,
+      "eco": 0.05,
+      "rev": 0.113,
+      "dist": 0,
+      "cho": 0.02,
+      "tel": 0.057
+    },
+    "mi robot": {
+      "voz": "⭐ Dalia        · MX Mujer",
+      "vel": 10,
+      "pit": 0,
+      "vol": 1.967,
+      "rob": 0.043,
+      "eco": 0.05,
+      "rev": 0.113,
+      "dist": 0,
+      "cho": 0.02,
+      "tel": 0.057
+    }
+  },
+  "ultima": {
+    "voz": "⭐ Dalia        · MX Mujer",
+    "vel": 10,
+    "pit": 0,
+    "vol": 1.967,
+    "rob": 0.043,
+    "eco": 0.05,
+    "rev": 0.113,
+    "dist": 0,
+    "cho": 0.02,
+    "tel": 0.057
+  }
+}

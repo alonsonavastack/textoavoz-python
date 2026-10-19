@@ -1,0 +1,58 @@
+name: Compilar para Windows
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Permite ejecutar manualmente desde la pestaña Actions
+
+jobs:
+  build:
+    name: Compilar Ejecutable e Instalador Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar codigo fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compilar aplicacion con PyInstaller
+        run: |
+          pyinstaller --clean -y TextoAVoz.spec
+
+      - name: Instalar Inno Setup
+        run: |
+          choco install innosetup -y
+
+      - name: Generar Instalador Windows con Inno Setup
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+
+      - name: Comprimir carpeta portable
+        run: |
+          Compress-Archive -Path dist\TextoAVoz\* -DestinationPath dist\TextoAVoz-Windows-Portable.zip
+
+      - name: Subir Instalador como Artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: Instalador-TextoAVoz-Windows
+          path: dist/Instalador_TextoAVoz_*.exe
+          if-no-files-found: error
+
+      - name: Subir Version Portable (ZIP)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TextoAVoz-Windows-Portable
+          path: dist/TextoAVoz-Windows-Portable.zip
+          if-no-files-found: error
