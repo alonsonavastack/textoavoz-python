@@ -1,3 +1,16 @@
+import os
+import sys
+
+# Configurar rutas de Tcl/Tk para entorno embebido o empaquetado en Windows
+if os.name == "nt":
+    base_py = os.path.dirname(sys.executable)
+    tcl_cand = os.path.join(base_py, "tcl", "tcl8.6")
+    tk_cand = os.path.join(base_py, "tcl", "tk8.6")
+    if os.path.exists(tcl_cand):
+        os.environ.setdefault("TCL_LIBRARY", tcl_cand)
+    if os.path.exists(tk_cand):
+        os.environ.setdefault("TK_LIBRARY", tk_cand)
+
 import customtkinter as ctk
 import multiprocessing
 import asyncio
@@ -6,8 +19,6 @@ import numpy as np
 import sounddevice as sd
 import soundfile as sf
 import tempfile
-import os
-import sys
 import time
 import json
 import shutil
