@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from math import gcd
 
 import edge_tts
@@ -171,7 +172,9 @@ def sintetizar(texto, preset="Normal", voz=None, vel=None, pit=None, vol=None, s
     tmp = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)
     tmp.close()
     try:
-        asyncio.run(_edge_a_mp3(texto, voz_id, vel, pit, tmp.name))
+        # En un hilo propio: así funciona también dentro del servidor MCP (que ya tiene un bucle asyncio)
+        with ThreadPoolExecutor(max_workers=1) as ex:
+            ex.submit(lambda: asyncio.run(_edge_a_mp3(texto, voz_id, vel, pit, tmp.name))).result()
         data, sr = sf.read(tmp.name)
     finally:
         try:
