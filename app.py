@@ -62,6 +62,15 @@ def obtener_ruta_config():
 
 CONFIG_PATH = obtener_ruta_config()
 
+def comando_conector():
+    """Comando para registrar el conector MCP en Claude Code, con la ruta real de esta instalación."""
+    if getattr(sys, "frozen", False):
+        nombre = "TextoAVozMCP.exe" if os.name == "nt" else "TextoAVozMCP"
+        ruta = os.path.join(os.path.dirname(sys.executable), nombre)
+        return f'claude mcp add textoavoz -- "{ruta}"'
+    servidor = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mcp_server.py")
+    return f'claude mcp add textoavoz -- "{sys.executable}" "{servidor}"'
+
 VOCES = {
     # ── México · Mujeres (confirmadas) ───────────────────────────────────────
     "⭐ Dalia    · MX Mujer":    "es-MX-DaliaNeural",
@@ -411,6 +420,16 @@ class TextoAVozApp(ctk.CTk):
             command=self._detectar_voces
         ).pack(pady=(6, 0))
 
+        ctk.CTkButton(
+            self, text="🔌 Conectar con Claude Code",
+            width=340, height=30, corner_radius=8,
+            font=ctk.CTkFont(size=11),
+            fg_color="transparent", hover_color="#1a1a1a",
+            border_color="#222", border_width=1,
+            text_color="#555555",
+            command=self._mostrar_conector
+        ).pack(pady=(6, 12))
+
     # ── Helpers UI ────────────────────────────────────────────────────────────
     def _panel(self):
         f = ctk.CTkFrame(self, fg_color="#0e0e0e", corner_radius=14,
@@ -649,6 +668,39 @@ class TextoAVozApp(ctk.CTk):
                 text=f"⚠ Error: {m}", text_color="#ff6b6b"))
         finally:
             self.after(0, lambda: self.btn_descargar.configure(state="normal"))
+
+    def _mostrar_conector(self):
+        cmd = comando_conector()
+        win = ctk.CTkToplevel(self)
+        win.title("Conectar con Claude Code")
+        win.geometry("780x330")
+        win.configure(fg_color="#0e0e0e")
+        win.after(200, win.lift)
+        ctk.CTkLabel(win, text="🔌  Conectar con Claude Code",
+                     font=ctk.CTkFont(size=18, weight="bold"),
+                     text_color="#00cfff").pack(pady=(20, 4))
+        ctk.CTkLabel(win, text="Pega este comando en una terminal (solo una vez). Después pídele a Claude "
+                               "que genere la voz de tu guion con tus configuraciones guardadas.",
+                     wraplength=700, justify="center",
+                     font=ctk.CTkFont(size=12), text_color="#888888").pack(padx=24, pady=(0, 12))
+        caja = ctk.CTkTextbox(win, height=90, font=ctk.CTkFont(family="Courier", size=12),
+                              fg_color="#101010", border_color="#1c1c1c", border_width=2,
+                              text_color="#39ff14", wrap="word")
+        caja.pack(padx=24, fill="x")
+        caja.insert("0.0", cmd)
+
+        def copiar():
+            self.clipboard_clear()
+            self.clipboard_append(cmd)
+            self.update()
+            btn.configure(text="✅ Copiado")
+            self.label_estado.configure(text="✅ Comando copiado: pégalo en tu terminal", text_color="#00ff99")
+
+        btn = ctk.CTkButton(win, text="📋 Copiar comando", width=220, height=38, corner_radius=10,
+                            font=ctk.CTkFont(size=13, weight="bold"),
+                            fg_color="#00cfff", hover_color="#0099cc", text_color="#000000",
+                            command=copiar)
+        btn.pack(pady=18)
 
     def _detectar_voces(self):
         self.label_estado.configure(text="🔍 Detectando voces... espera un momento", text_color="#ffdd00")

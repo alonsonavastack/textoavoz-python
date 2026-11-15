@@ -46,6 +46,14 @@ python app.py
 
 `mcp_server.py` deja que Claude Code genere **WAV** con tus voces y configuraciones guardadas en la app (se leen de `~/.textoavoz/configuraciones.json`).
 
+**Con el programa instalado (Windows, sin código fuente):** el instalador incluye `TextoAVozMCP.exe` junto a `TextoAVoz.exe`. Abre la app, pulsa **🔌 Conectar con Claude Code**, copia el comando (ya trae la ruta real de tu instalación) y pégalo una vez en una terminal:
+
+```bash
+claude mcp add textoavoz -- "C:\Users\TU_USUARIO\AppData\Local\Programs\Texto a Voz Studio\TextoAVozMCP.exe"
+```
+
+**Desde el código fuente:**
+
 ```bash
 claude mcp add textoavoz -- /RUTA/textoavoz-python/venv/bin/python /RUTA/textoavoz-python/mcp_server.py
 ```
