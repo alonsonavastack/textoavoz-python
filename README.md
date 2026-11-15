@@ -52,6 +52,8 @@ python app.py
 claude mcp add textoavoz -- "C:\Users\TU_USUARIO\AppData\Local\Programs\Texto a Voz Studio\TextoAVozMCP.exe"
 ```
 
+**En macOS (.dmg):** abre `TextoAVoz-macOS-*.dmg`, arrastra la app a Aplicaciones, ábrela con clic derecho → Abrir (no está notarizada) y pulsa **🔌 Conectar con Claude Code**. El conector queda en `/Applications/TextoAVoz.app/Contents/MacOS/TextoAVozMCP`. Para generar el `.dmg` en un Mac: `./build_mac.sh`.
+
 **Desde el código fuente:**
 
 ```bash

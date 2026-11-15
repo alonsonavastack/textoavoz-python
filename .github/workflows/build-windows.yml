@@ -60,3 +60,32 @@ jobs:
           name: TextoAVoz-Windows-Portable
           path: dist/TextoAVoz-Windows-Portable.zip
           if-no-files-found: error
+
+  build-macos:
+    name: Compilar .app y .dmg para macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Descargar codigo fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compilar, probar el conector y crear el .dmg
+        run: ./build_mac.sh
+
+      - name: Subir DMG como Artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: TextoAVoz-macOS-dmg
+          path: dist/TextoAVoz-macOS-*.dmg
+          if-no-files-found: error

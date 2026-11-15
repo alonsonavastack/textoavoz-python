@@ -120,3 +120,17 @@ coll = COLLECT(
     upx_exclude=[],
     name='TextoAVoz',
 )
+
+# En macOS se empaqueta ademas como TextoAVoz.app (el conector queda en Contents/MacOS/TextoAVozMCP)
+if sys.platform == 'darwin':
+    app_mac = BUNDLE(
+        coll,
+        name='TextoAVoz.app',
+        icon='assets/icon.icns' if os.path.exists('assets/icon.icns') else None,
+        bundle_identifier='com.alonsonavastack.textoavoz',
+        info_plist={
+            'CFBundleName': 'Texto a Voz Studio',
+            'CFBundleDisplayName': 'Texto a Voz Studio',
+            'NSHighResolutionCapable': True,
+        },
+    )
