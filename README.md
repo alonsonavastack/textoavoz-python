@@ -42,6 +42,22 @@ python app.py
 
 ---
 
+## 🔌 Conector MCP para Claude Code (voz para reels/videos)
+
+`mcp_server.py` deja que Claude Code genere **WAV** con tus voces y configuraciones guardadas en la app (se leen de `~/.textoavoz/configuraciones.json`).
+
+```bash
+claude mcp add textoavoz -- /RUTA/textoavoz-python/venv/bin/python /RUTA/textoavoz-python/mcp_server.py
+```
+
+Herramientas: `listar_voces`, `generar_voz` (un WAV) y `generar_guion` (un WAV por escena + `voz_completa.wav` + `manifest.json` con inicio/fin de cada escena para sincronizar la animación).
+
+También por terminal: `python voz_core.py --guion guion.txt --salida carpeta --preset "Narrador"` (en el `.txt`, una escena por párrafo).
+
+> Nota: `voz_core.py` replica los efectos de `app.py`; si cambias uno, cambia el otro.
+
+---
+
 ## 📦 Compilar el Instalador para Windows
 
 Para generar el ejecutable `.exe` y el instalador profesional:
